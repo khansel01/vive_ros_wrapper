@@ -22,7 +22,7 @@ void mySigintHandler(int sig){
 ros::shutdown();
 }
 
-//#define USE_IMAGE
+#define USE_IMAGE
 
 #define USE_OPENGL
 //#define USE_VULKAN
@@ -483,10 +483,11 @@ VIVEnode::VIVEnode(int rate)
 
 #ifdef USE_IMAGE
   image_transport::ImageTransport it(nh_);
-  sub_L = it.subscribe("/image_left", 1, &VIVEnode::imageCb_L, this);
-  sub_R = it.subscribe("/image_right", 1, &VIVEnode::imageCb_R, this);
-  sub_i_L = nh_.subscribe("/camera_info_left", 1, &VIVEnode::infoCb_L, this);
-  sub_i_R = nh_.subscribe("/camera_info_right", 1, &VIVEnode::infoCb_R, this);
+  image_transport::TransportHints hints("compressed");
+  sub_L = it.subscribe("/zed2/zed_node/left/image_rect_color", 1, &VIVEnode::imageCb_L, this);
+  sub_R = it.subscribe("/zed2/zed_node/right/image_rect_color", 1, &VIVEnode::imageCb_R, this);
+  sub_i_L = nh_.subscribe("/zed2/zed_node/left/camera_info", 1, &VIVEnode::infoCb_L, this);
+  sub_i_R = nh_.subscribe("/zed2/zed_node/right/camera_info", 1, &VIVEnode::infoCb_R, this);
   pMainApplication = new CMainApplicationMod( 0, NULL );
   if (!pMainApplication->BInit()){
     pMainApplication->Shutdown();

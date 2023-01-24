@@ -1,6 +1,20 @@
-# vive_ros
+# vive_ros_wrapper
 
-Video example: [https://youtu.be/1hiX0f6UAew](https://youtu.be/1hiX0f6UAew)
+The repository *vive_ros_wrapper* is forked from [robosavvy vive_ros](https://github.com/robosavvy/vive_ros). 
+
+## Changes 
+
+- The file src/vive_node.cpp has been changed to use the compressed rgb images from the zed camera. 
+
+## Additional requirements due to the change
+
+- [Zed Camera](https://store.stereolabs.com/en-de/products/zed-2);
+- [Zed_ros_wrapper](https://github.com/stereolabs/zed-ros-wrapper) and [zed_ros_interface](https://github.com/stereolabs/zed-ros-interfaces);
+- Compatible [Zed SDK](https://www.stereolabs.com/developers/) version.
+
+## Example
+
+A video example: [https://youtu.be/1hiX0f6UAew](https://youtu.be/1hiX0f6UAew)
 
 ## Installation instructions
 
@@ -46,6 +60,42 @@ SteamVR files should be located in: `~/.steam/steam/steamapps/common/SteamVR`
 ### Configure display.
 
 Go to your OS display options to enable HMD's display.
+
+```
+xrandr --output DP-1 --auto --primary --output HDMI-0 --auto --right-of DP-1
+```
+here DP-1 is a port which your pc monitor is connected, and HDMI-0 is a port which your HTC is connected, modify thoese values accordingly.
+
+TO check the ports run follwing:
+
+```
+xrandr 
+```
+In case that the HTC device is not detected by running xrandr, you probably need to enable HMD on your nvidia config. This problem is a common issue with modern GPUs. Therefore run 
+
+```
+cat /etc/x11/xorg.conf
+```
+to see whether HMD is enabled. If no file exist run 
+
+```
+sudo nvidia-xconfig
+```
+to create the file. Afterwards vim in 
+
+```
+sudo vim /etc/x11/xorg.conf
+```
+and enable HMD device by adding the AllowHMD option: 
+
+```
+Section "Device"
+    Identifier     "Device0"
+    Driver         "nvidia"
+    VendorName     "NVIDIA Corporation"
+    Option         "AllowHMD" "yes"
+EndSection
+```
 
 ## Usage
 
